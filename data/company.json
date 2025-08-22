@@ -1,0 +1,37 @@
+{
+  "name": "Prayosha Impex",
+  "tagline": "Advanced Coated Fabrics — Engineered for Global Performance",
+  "description": "Leading manufacturer and exporter of advanced technical textile solutions and high-performance coated fabrics.",
+  "contact": {
+    "address": "E-36,LaxmiNarayan Industrial Soc. Udhna-Pandesara Road, Surat, Gujarat, India",
+    "email": "Akshar@prayoshaimpex.com",
+    "phone": "+91-9924094842",
+    "coordinates": {
+      "lat": 30.7333,
+      "lng": 76.7794
+    }
+  },
+  "social": {
+    "linkedin": "#",
+    "twitter": "#",
+    "facebook": "#"
+  },
+  "stats": [
+    {
+      "label": "ISO 9001:2015",
+      "value": "Certified"
+    },
+    {
+      "label": "Global Markets",
+      "value": "50+"
+    },
+    {
+      "label": "Production Capacity",
+      "value": "50,000m/day"
+    },
+    {
+      "label": "R&D Experience",
+      "value": "15+ Years"
+    }
+  ]
+}
