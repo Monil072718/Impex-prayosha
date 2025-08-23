@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import {Section} from "@/components/site/Section"; // default import to match the target UI
+import { Section } from "@/components/site/Section";
 import {
   MapPin,
   Phone,
@@ -15,9 +15,6 @@ import {
   Clock,
   Send,
   Globe,
-  MessageSquare,
-  Users,
-  Headphones,
 } from "lucide-react";
 import { sendContactForm } from "@/app/actions/sendContact";
 import companyData from "@/data/company.json";
@@ -27,6 +24,11 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(formData: FormData) {
+    // honeypot check (spam bots often fill hidden fields)
+    if (formData.get("company_website_trap")) {
+      return; // silently drop
+    }
+
     setIsSubmitting(true);
     try {
       const result = await sendContactForm(formData);
@@ -57,15 +59,23 @@ export default function ContactPage() {
   }
 
   // Support both address object and string
-  const address = companyData?.contact?.address;
-  const isAddressObject = address && typeof address === "object";
-  const street = isAddressObject ? address.street : address;
-  const city = isAddressObject ? address.city : "";
-  const state = isAddressObject ? address.state : "";
-  const country = isAddressObject ? address.country : "";
-  const pincode = isAddressObject ? address.pincode : "";
+  type AddressObject = {
+    street?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    pincode?: string;
+  };
 
-  const coords = companyData?.contact?.coordinates || { lat: "—", lng: "—" };
+  const address = companyData?.contact?.address;
+  const isAddressObject = typeof address === "object";
+
+  const street = isAddressObject ? (address as AddressObject).street ?? "" : (address as string) ?? "";
+  const city = isAddressObject ? (address as AddressObject).city ?? "" : "";
+  const state = isAddressObject ? (address as AddressObject).state ?? "" : "";
+  const country = isAddressObject ? (address as AddressObject).country ?? "" : "";
+  const pincode = isAddressObject ? (address as AddressObject).pincode ?? "" : "";
+
 
   const contactSchema = {
     "@context": "https://schema.org",
@@ -91,28 +101,28 @@ export default function ContactPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
       />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <Section className="py-16 md:py-24 bg-gradient-to-br from-primary/10 via-primary/5 to-primary/0">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-6 max-w-5xl mx-auto">
           <Badge className="bg-secondary text-secondary-foreground">
-            Global Support • 24-48 Hour Response Time
+            Global Support • 24–48 Hour Response Time
           </Badge>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight">
             Get in{" "}
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               Touch
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Ready to discuss your technical textile requirements? Our expert team is here to provide
-            customized solutions and comprehensive support for your projects worldwide.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Ready to discuss your technical textile requirements? Our expert team provides
+            customized solutions and comprehensive support worldwide.
           </p>
         </div>
       </Section>
 
-      {/* Contact Form & Info */}
+      {/* Form + Info */}
       <Section>
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Contact Form */}
@@ -120,25 +130,50 @@ export default function ContactPage() {
             <Card className="border-border/50 shadow-md">
               <CardHeader>
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Send us a Message</h2>
+                  <h2 className="text-2xl font-bold tracking-tight">Send us a Message</h2>
                   <p className="text-muted-foreground">
-                    Fill out the form below and our team will get back to you within 24-48 hours.
+                    Fill out the form below and our team will get back to you within 24–48 hours.
                   </p>
                 </div>
               </CardHeader>
+
               <CardContent>
-                <form id="contact-form" action={handleSubmit} className="space-y-6">
+                <form
+                  id="contact-form"
+                  action={handleSubmit}
+                  className="space-y-6"
+                  aria-describedby="contact-help"
+                  noValidate
+                >
+                  {/* Honeypot (hidden field) */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="company_website_trap">Company Website</label>
+                    <input id="company_website_trap" name="company_website_trap" type="text" />
+                  </div>
+
+                  <div id="contact-help" className="sr-only">
+                    Required fields are marked with an asterisk.
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium">
-                        Full Name *
+                        Full Name <span className="text-destructive">*</span>
                       </label>
-                      <Input id="name" name="name" type="text" placeholder="Your full name" required />
+                      <Input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Your full name"
+                        required
+                        autoComplete="name"
+                        maxLength={120}
+                      />
                     </div>
 
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-medium">
-                        Email Address *
+                        Email Address <span className="text-destructive">*</span>
                       </label>
                       <Input
                         id="email"
@@ -146,6 +181,9 @@ export default function ContactPage() {
                         type="email"
                         placeholder="your.email@company.com"
                         required
+                        autoComplete="email"
+                        inputMode="email"
+                        maxLength={140}
                       />
                     </div>
                   </div>
@@ -160,6 +198,9 @@ export default function ContactPage() {
                         name="phone"
                         type="tel"
                         placeholder="+1 (555) 123-4567"
+                        autoComplete="tel"
+                        inputMode="tel"
+                        maxLength={32}
                       />
                     </div>
 
@@ -172,6 +213,8 @@ export default function ContactPage() {
                         name="company"
                         type="text"
                         placeholder="Your company name"
+                        autoComplete="organization"
+                        maxLength={120}
                       />
                     </div>
                   </div>
@@ -180,12 +223,19 @@ export default function ContactPage() {
                     <label htmlFor="country" className="text-sm font-medium">
                       Country
                     </label>
-                    <Input id="country" name="country" type="text" placeholder="Your country" />
+                    <Input
+                      id="country"
+                      name="country"
+                      type="text"
+                      placeholder="Your country"
+                      autoComplete="country-name"
+                      maxLength={80}
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium">
-                      Message *
+                      Message <span className="text-destructive">*</span>
                     </label>
                     <Textarea
                       id="message"
@@ -193,23 +243,22 @@ export default function ContactPage() {
                       placeholder="Tell us about your project requirements, technical specifications, or any questions you have..."
                       rows={6}
                       required
+                      maxLength={4000}
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Please include fabric type, application, expected quantities, and timelines if available.
+                    </p>
                   </div>
 
                   <Button
                     type="submit"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-primary to-primary/70"
+                    aria-busy={isSubmitting}
+                    className="w-full gap-2 bg-gradient-to-r from-primary to-primary/70"
                   >
-                    {isSubmitting ? (
-                      "Sending..."
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5 mr-2" />
-                        Send Message
-                      </>
-                    )}
+                    <Send className="w-5 h-5" />
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
@@ -220,7 +269,7 @@ export default function ContactPage() {
           <div className="space-y-6">
             <Card className="border-border/50">
               <CardHeader>
-                <CardTitle className="text-xl">Contact Information</CardTitle>
+                <CardTitle className="text-xl tracking-tight">Contact Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-start gap-3">
@@ -231,9 +280,10 @@ export default function ContactPage() {
                       <p className="text-sm text-muted-foreground">
                         {street}
                         <br />
-                        {city}{city && state ? ", " : ""}{state}
+                        {city}
+                        {city && state ? ", " : ""}{state}
                         <br />
-                        {country}{pincode ? ` - ${pincode}` : ""}
+                        {country}{pincode ? ` — ${pincode}` : ""}
                       </p>
                     ) : (
                       <p className="text-sm text-muted-foreground">{street || "—"}</p>
@@ -275,14 +325,14 @@ export default function ContactPage() {
 
             <Card className="border-border/50">
               <CardHeader>
-                <CardTitle className="text-xl">Business Hours</CardTitle>
+                <CardTitle className="text-xl tracking-tight">Business Hours</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="font-medium">Monday - Saturday</p>
-                    <p className="text-sm text-muted-foreground">9:00 AM - 8:00 PM IST</p>
+                    <p className="font-medium">Monday – Saturday</p>
+                    <p className="text-sm text-muted-foreground">9:00 AM – 8:00 PM IST</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -297,8 +347,6 @@ export default function ContactPage() {
           </div>
         </div>
       </Section>
-
-
     </>
   );
 }
