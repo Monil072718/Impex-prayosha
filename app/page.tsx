@@ -140,74 +140,74 @@ export default function HomePage() {
 
       {/* 3) Industries We Serve (Refreshed UI) */}
       <Section className="bg-white">
-  {/* Heading */}
-  <div className="text-center mb-14">
-    <span className="inline-block rounded-full bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 ring-1 ring-blue-200">
-      Our Expertise
-    </span>
-    <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
-      Industries We Serve
-    </h2>
-    <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
-      Our advanced coated fabrics serve diverse industries with specialized requirements.
-    </p>
-  </div>
+        {/* Heading */}
+        <div className="text-center mb-14">
+          <span className="inline-block rounded-full bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 ring-1 ring-blue-200">
+            Our Expertise
+          </span>
+          <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
+            Industries We Serve
+          </h2>
+          <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+            Our advanced coated fabrics serve diverse industries with specialized requirements.
+          </p>
+        </div>
 
-  {/* Feature tiles with accent bar */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-    {industriesData.map((industry, idx) => {
-      const Icon = iconMap[industry.icon as keyof typeof iconMap];
-      return (
-        <Card
-          key={industry.name}
-          className="relative overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-        >
-          {/* Left accent bar */}
-          <div
-            className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b`}
-          />
+        {/* Feature tiles with accent bar */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {industriesData.map((industry, idx) => {
+            const Icon = iconMap[industry.icon as keyof typeof iconMap];
+            return (
+              <Card
+                key={industry.name}
+                className="relative overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                {/* Left accent bar */}
+                <div
+                  className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b`}
+                />
 
-          {/* Subtle background shimmer */}
-          <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-tr from-black/5 to-transparent blur-2xl" />
+                {/* Subtle background shimmer */}
+                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-tr from-black/5 to-transparent blur-2xl" />
 
-          <CardHeader className="pl-8 pr-6 pt-6">
-            {Icon && (
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50 text-gray-700 ring-1 ring-gray-200">
-                  <Icon className="h-6 w-6" />
-                </span>
-                <CardTitle className="text-lg md:text-xl tracking-tight">
-                  {industry.name}
-                </CardTitle>
-              </div>
-            )}
-          </CardHeader>
+                <CardHeader className="pl-8 pr-6 pt-6">
+                  {Icon && (
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50 text-gray-700 ring-1 ring-gray-200">
+                        <Icon className="h-6 w-6" />
+                      </span>
+                      <CardTitle className="text-lg md:text-xl tracking-tight">
+                        {industry.name}
+                      </CardTitle>
+                    </div>
+                  )}
+                </CardHeader>
 
-          <CardContent className="pl-8 pr-6 pb-6">
-            <CardDescription className="text-gray-600 leading-relaxed">
-              {industry.description}
-            </CardDescription>
+                <CardContent className="pl-8 pr-6 pb-6">
+                  <CardDescription className="text-gray-600 leading-relaxed">
+                    {industry.description}
+                  </CardDescription>
 
-            {/* tiny underline accent */}
-            <div className="mt-5 h-1.5 w-16 rounded-full bg-gradient-to-r from-gray-900/80 to-gray-900/20" />
-          </CardContent>
-        </Card>
-      );
-    })}
-  </div>
+                  {/* tiny underline accent */}
+                  <div className="mt-5 h-1.5 w-16 rounded-full bg-gradient-to-r from-gray-900/80 to-gray-900/20" />
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-  {/* CTA */}
-  <div className="text-center mt-14">
-    <Button
-      size="lg"
-      variant="outline"
-      asChild
-      className="rounded-xl border-2 hover:border-gray-900 hover:text-gray-900 transition-colors"
-    >
-      <Link href="/contact">Discuss Your Use Case</Link>
-    </Button>
-  </div>
-</Section>
+        {/* CTA */}
+        <div className="text-center mt-14">
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
+            className="rounded-xl border-2 hover:border-gray-900 hover:text-gray-900 transition-colors"
+          >
+            <Link href="/contact">Discuss Your Use Case</Link>
+          </Button>
+        </div>
+      </Section>
 
     </>
   );
