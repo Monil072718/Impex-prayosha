@@ -1,7 +1,9 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
+import ContainerScroll from "@/components/ui/container-scroll-animation";
 import { Calendar } from "lucide-react";
 import { generateSEOMetadata } from "@/lib/seo";
 
@@ -66,48 +68,56 @@ const FACILITY_IMAGES: { src: string; alt: string }[] = [
 export default function InfrastructurePage() {
   return (
     <>
-      {/* Four Units (alternate image/text per row) */}
       <Section className="bg-white py-16">
-        <div className="space-y-12">
+        <div className="space-y-24">
           {UNITS.map((u, idx) => {
-            const flip = idx % 2 === 1; // alternate rows on lg+
+            const flip = idx % 2 === 1;
             return (
-              <div
-                key={u.key}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
-              >
-                {/* Image */}
-                <div
-                  className={
-                    "relative h-64 md:h-80 lg:h-[360px] rounded-2xl overflow-hidden shadow-lg " +
-                    (flip ? "lg:order-2" : "lg:order-1")
+              <div key={u.key} className="flex flex-col overflow-hidden">
+                <ContainerScroll
+                  titleComponent={
+                    <div
+                      className={[
+                        "max-w-4xl mx-auto px-4 sm:px-6",
+                        flip ? "lg:text-right" : "lg:text-left",
+                      ].join(" ")}
+                    >
+                      <h2 className="text-3xl md:text-5xl font-bold text-black dark:text-white tracking-tight">
+                        {u.title}
+                      </h2>
+                      <p className="mt-4 mb-3 text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {u.description}
+                      </p>
+
+                      <div
+                        className={[
+                          "mt-6 h-1 w-24 rounded-full bg-gradient-to-r from-gray-900/90 to-gray-900/20",
+                          flip ? "ml-auto" : "mr-auto",
+                        ].join(" ")}
+                      />
+                    </div>
                   }
                 >
                   <Image
                     src={u.image || "/placeholder.svg"}
                     alt={u.title}
-                    fill
-                    className="object-cover"
-                    priority={false}
+                    width={1000}
+                    height={520}
+                    priority={idx === 0}
+                    draggable={false}
+                    className={[
+                      "mx-auto rounded-2xl object-cover h-full",
+                      flip ? "object-right-top" : "object-left-top",
+                      "shadow-2xl ring-1 ring-black/5",
+                    ].join(" ")}
                   />
-                </div>
-
-                {/* Details */}
-                <div className={flip ? "lg:order-1" : "lg:order-2"}>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                    {u.title}
-                  </h2>
-                  <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-                    {u.description}
-                  </p>
-                </div>
+                </ContainerScroll>
               </div>
             );
           })}
         </div>
       </Section>
 
-      {/* Facility Gallery */}
       <Section className="bg-gray-50">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Facility Gallery</h2>
@@ -116,21 +126,29 @@ export default function InfrastructurePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Minimal, even grid with captions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FACILITY_IMAGES.map((img, i) => (
-            <div key={i} className="relative h-64 rounded-lg overflow-hidden group">
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                priority={i < 2}
-              />
-            </div>
+            <figure
+              key={i}
+              className="group"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                  priority={i < 2}
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+              </div>
+
+            </figure>
           ))}
         </div>
       </Section>
+
 
     </>
   );
