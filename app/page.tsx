@@ -19,25 +19,26 @@ export async function generateMetadata() {
   });
 }
 
-  const MARQUEE_TOP: string[] = [
-    "/images/slider/22.jpg",
-    "/images/slider/air-mesh-fabric-500x500.webp",
-    "/images/slider/awning-2.jpg",
-    "/images/slider/awning.jpg",
-    "/images/slider/bags_and_cases_series_big.jpg",
-    "/images/slider/Cordura-Military-Header_1.jpg",
-    "/images/slider/T2118E_039040_actionshot_1.avif"
-  ];
+const MARQUEE_TOP: string[] = [
+  "/images/slider/22.jpg",
+  "/images/slider/air-mesh-fabric-500x500.webp",
+  "/images/slider/awning-2.jpg",
+  "/images/slider/awning.jpg",
+  "/images/slider/bags_and_cases_series_big.jpg",
+  "/images/slider/Cordura-Military-Header_1.jpg",
+  "/images/slider/T2118E_039040_actionshot_1.avif"
+];
 
-  const MARQUEE_BOTTOM: string[] = [
-    "/images/slider/download.jpeg",
-    "/images/slider/images-(1).jpeg",
-    "/images/slider/lowsofdundee_lwtranslucentfr_1410625560A.avif",
-    "/images/slider/lowsofdundee_translucentfr_1410624726pag.avif",
-    "/images/slider/luggage-lining.jpg",
-    "/images/slider/outdoor-clothing.jpg",
-    "/images/slider/p2598974.avif",
-  ];
+const MARQUEE_BOTTOM: string[] = [
+  "/images/slider/download.jpeg",
+  "/images/slider/images-(1).jpeg",
+  "/images/slider/lowsofdundee_lwtranslucentfr_1410625560A.avif",
+  "/images/slider/lowsofdundee_translucentfr_1410624726pag.avif",
+  "/images/slider/luggage-lining.jpg",
+  "/images/slider/outdoor-clothing.jpg",
+  "/images/slider/p2598974.avif",
+];
+
 const iconMap = {
   truck: Truck,
   building: Building,
@@ -93,14 +94,13 @@ function ImageMarqueeRow({
   );
 }
 
-
 export default function HomePage() {
   // Build arrays of product images for the marquees
   const productImages = productsData.map((p) => p.image || "/placeholder.svg");
 
   return (
     <>
-      {/* 1) Full-bleed banner with background image + overlay text */}
+      {/* 1) Full-bleed banner with background image + overlay text (Refreshed UI) */}
       <section className="relative w-full h-[56vh] md:h-[68vh] lg:h-[78vh]">
         <Image
           src="/images/hero.jpg" // <-- replace with your actual banner
@@ -109,21 +109,26 @@ export default function HomePage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/40" />
+        {/* gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/30" />
+        {/* centered content on a glass card */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="text-center text-white max-w-4xl">
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Advanced Coated Fabrics — Engineered for Global Performance
-            </h1>
-            <p className="mt-4 text-base md:text-lg lg:text-xl text-white/90">
-              Leading manufacturer and exporter of advanced technical textile solutions. Serving global markets with ISO
-              9001:2015 certified quality and innovation.
-            </p>
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-3xl bg-white/10 backdrop-blur-md ring-1 ring-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.35)] p-6 md:p-10 text-center">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-white">
+                Advanced Coated Fabrics — Engineered for Global Performance
+              </h1>
+              <p className="mt-4 text-base md:text-lg lg:text-xl text-white/90">
+                Leading manufacturer and exporter of advanced technical textile solutions. Serving global markets with ISO
+                9001:2015 certified quality and innovation.
+              </p>
+              <div className="mx-auto mt-6 h-1 w-28 rounded-full bg-gradient-to-r from-white/80 to-white/30" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2) Full-bleed double image marquee (outside container) */}
+      {/* 2) Full-bleed double image marquee (UNCHANGED as requested) */}
       <section className="w-full bg-gray-50 border-y border-black/5">
         <div className="mx-auto max-w-none">
           {/* Top: left → right */}
@@ -133,39 +138,77 @@ export default function HomePage() {
         </div>
       </section>
 
-
-      {/* 3) Industries We Serve */}
+      {/* 3) Industries We Serve (Refreshed UI) */}
       <Section className="bg-white">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Industries We Serve</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our advanced coated fabrics serve diverse industries with specialized requirements.
-          </p>
-        </div>
+  {/* Heading */}
+  <div className="text-center mb-14">
+    <span className="inline-block rounded-full bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 ring-1 ring-blue-200">
+      Our Expertise
+    </span>
+    <h2 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
+      Industries We Serve
+    </h2>
+    <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+      Our advanced coated fabrics serve diverse industries with specialized requirements.
+    </p>
+  </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {industriesData.map((industry) => {
-            const Icon = iconMap[industry.icon as keyof typeof iconMap];
-            return (
-              <Card key={industry.name}>
-                <CardHeader>
-                  {Icon && <Icon className="h-8 w-8 text-blue-600 mb-2" />}
-                  <CardTitle>{industry.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{industry.description}</CardDescription>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+  {/* Feature tiles with accent bar */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+    {industriesData.map((industry, idx) => {
+      const Icon = iconMap[industry.icon as keyof typeof iconMap];
+      return (
+        <Card
+          key={industry.name}
+          className="relative overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+        >
+          {/* Left accent bar */}
+          <div
+            className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b`}
+          />
 
-        <div className="text-center mt-10">
-          <Button size="lg" variant="outline" asChild>
-            <Link href="/contact">Discuss Your Use Case</Link>
-          </Button>
-        </div>
-      </Section>
+          {/* Subtle background shimmer */}
+          <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-tr from-black/5 to-transparent blur-2xl" />
+
+          <CardHeader className="pl-8 pr-6 pt-6">
+            {Icon && (
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50 text-gray-700 ring-1 ring-gray-200">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <CardTitle className="text-lg md:text-xl tracking-tight">
+                  {industry.name}
+                </CardTitle>
+              </div>
+            )}
+          </CardHeader>
+
+          <CardContent className="pl-8 pr-6 pb-6">
+            <CardDescription className="text-gray-600 leading-relaxed">
+              {industry.description}
+            </CardDescription>
+
+            {/* tiny underline accent */}
+            <div className="mt-5 h-1.5 w-16 rounded-full bg-gradient-to-r from-gray-900/80 to-gray-900/20" />
+          </CardContent>
+        </Card>
+      );
+    })}
+  </div>
+
+  {/* CTA */}
+  <div className="text-center mt-14">
+    <Button
+      size="lg"
+      variant="outline"
+      asChild
+      className="rounded-xl border-2 hover:border-gray-900 hover:text-gray-900 transition-colors"
+    >
+      <Link href="/contact">Discuss Your Use Case</Link>
+    </Button>
+  </div>
+</Section>
+
     </>
   );
 }
