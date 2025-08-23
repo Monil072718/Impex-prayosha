@@ -261,7 +261,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Global Reach */}
-      <Section className="bg-[#0B2B43] text-white">
+      <Section className="py-16">
         <motion.div
           className="text-center max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
@@ -270,7 +270,7 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <motion.h2
-            className="text-3xl font-bold tracking-tight mb-6"
+            className="text-3xl font-bold tracking-tight mb-6 text-gray-900"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -279,7 +279,7 @@ export default function AboutPage() {
             Global Reach
           </motion.h2>
           <motion.p
-            className="text-lg md:text-xl mb-10 text-[#7FC6A4] max-w-3xl mx-auto"
+            className="text-lg md:text-xl mb-10 text-gray-600 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -308,10 +308,10 @@ export default function AboutPage() {
               { number: "6–12 Hours", label: "Response Time" },
               { number: "8+", label: "Years Experience" },
               { number: "95%", label: "Customer Satisfaction" },
-            ].map((stat, idx) => (
+            ].map((stat) => (
               <motion.div
                 key={stat.label}
-                className="rounded-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/20 p-6 shadow-sm"
+                className="rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 p-6 transition-all duration-300 hover:bg-gray-50 hover:shadow-lg"
                 variants={{
                   hidden: { opacity: 0, y: 30 },
                   visible: { opacity: 1, y: 0 },
@@ -319,13 +319,14 @@ export default function AboutPage() {
                 whileHover={{ scale: 1.05, y: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="text-3xl font-extrabold mb-2">{stat.number}</div>
-                <div className="text-[#7FC6A4]">{stat.label}</div>
+                <div className="text-3xl font-extrabold mb-2 text-[#0B2B43]">{stat.number}</div>
+                <div className="text-gray-600">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </Section>
+
     </>
   )
 }
